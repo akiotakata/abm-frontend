@@ -7,7 +7,8 @@ import List from './components/vehicle/List';
 const App = () => {
   return (
     <Container>
-      <Create />
+      {/* <Create /> */}
+      <List />
     </Container>
   );
 };
