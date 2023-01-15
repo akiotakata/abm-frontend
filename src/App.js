@@ -1,14 +1,14 @@
-import Create from './components/Create';
-import Edit from './components/Edit';
-import List from './components/List';
+import 'bootstrap/dist/css/bootstrap.css';
+import Container from 'react-bootstrap/Container';
+import Create from './components/vehicle/Create';
+import Edit from './components/vehicle/Edit';
+import List from './components/vehicle/List';
 
 const App = () => {
   return (
-    <div>
+    <Container>
       <Create />
-      <Edit />
-      <List />
-    </div>
+    </Container>
   );
 };
 
