@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import { Container, Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
-import Input from '../form/Input';
 
 const List = () => {
+  const [allVehicles, setAllVehicles] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -15,17 +15,15 @@ const List = () => {
 
   const fetchVehicles = async () => {
     await axios.get('http://localhost/api/vehicles').then(({ data }) => {
+      setAllVehicles(data.data);
       setVehicles(data.data);
     });
   };
 
   const deleteVehicle = async (id) => {
-    await axios
-      .delete(`http://localhost/api/vehicles/${id}`)
-      .then(() => {
-        fetchVehicles();
-      })
-      .catch(({ response: { data } }) => {});
+    await axios.delete(`http://localhost/api/vehicles/${id}`).then(() => {
+      fetchVehicles();
+    });
   };
 
   const onInputChange = (event) => {
@@ -36,22 +34,22 @@ const List = () => {
     event.preventDefault();
 
     if (searchTerm !== '') {
-      const filteredVehicles = vehicles.filter((vehicle) => {
+      const filteredVehicles = allVehicles.filter((vehicle) => {
         const regex = new RegExp(searchTerm, 'i');
         return vehicle.marca.match(regex) || vehicle.modelo.match(regex);
       });
 
       setVehicles(filteredVehicles);
     } else {
-      fetchVehicles();
+      setVehicles(allVehicles);
     }
   };
 
   return (
     <Container>
+      <h1>Listado de Vehículos</h1>
       <Row>
         <Col>
-          <h1>Listado de Vehículos</h1>
           <Form onSubmit={filterVehicles}>
             <InputGroup className="mb-3">
               <Form.Control
@@ -70,6 +68,8 @@ const List = () => {
               </Button>
             </InputGroup>
           </Form>
+        </Col>
+        <Col>
           <Link
             className="btn btn-primary mb-2 float-end"
             to={'/vehicle/create'}
