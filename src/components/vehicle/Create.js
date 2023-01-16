@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 import Input from '../form/Input';
 
 const Create = () => {
+  const navigate = useNavigate();
+
   const initialValues = {
     tipo_vehiculo: '',
     cantidad_ruedas: '',
@@ -27,14 +29,11 @@ const Create = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        `http://localhost/api/vehicles`,
-        vehicle
-      );
+      await axios.post(`http://localhost/api/vehicles`, vehicle);
 
       setVehicle(initialValues);
 
-      // agregar redirect a home
+      navigate('/');
     } catch (error) {
       console.log('Error:', error.message);
     }
